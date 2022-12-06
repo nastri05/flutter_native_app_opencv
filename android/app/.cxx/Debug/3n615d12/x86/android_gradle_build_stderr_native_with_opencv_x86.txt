@@ -1,0 +1,1 @@
+ninja: error: 'E:/hoc tap/20213/tools/OpenCV-android-sdk/sdk/native/3rdparty/libs/x86/libtegra_hal.a', needed by 'E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/3n615d12/obj/x86/libnative_with_opencv.so', missing and no known rule to make it

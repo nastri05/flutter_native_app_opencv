@@ -1,0 +1,9 @@
+# ninja log v5
+1	117	692023508	CMakeFiles/native_with_opencv.dir/src/main/cpp/native_add.cpp.o	5876a4adadf2b97c
+118	311	692023508	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/3n615d12/obj/armeabi-v7a/libnative_with_opencv.so	ee37b64352db0703
+3	308	692023652	CMakeFiles/cpufeatures.dir/C_/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/sources/android/cpufeatures/cpu-features.c.o	aa470990c90a809
+310	640	692023653	libcpufeatures.a	585b47136f3d7732
+6	1891	692023654	CMakeFiles/native_with_opencv.dir/src/main/cpp/native_add.cpp.o	3a34798cfd66188b
+1892	2571	692023655	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/3n615d12/obj/armeabi-v7a/libnative_with_opencv.so	317fd65a67c90208
+6	125	692023688	CMakeFiles/native_with_opencv.dir/src/main/cpp/native_add.cpp.o	3a34798cfd66188b
+125	362	692023689	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/3n615d12/obj/armeabi-v7a/libnative_with_opencv.so	317fd65a67c90208

@@ -1,0 +1,7 @@
+Executable : C:\Users\ASUS\AppData\Local\Android\sdk\cmake\3.18.1\bin\ninja.exe
+arguments : 
+-C
+E:\hoc tap\20213\project_native\android\app\.cxx\Debug\595s52o2\x86_64
+native_add
+jvmArgs : 
+

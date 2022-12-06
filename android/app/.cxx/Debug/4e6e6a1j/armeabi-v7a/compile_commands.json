@@ -1,0 +1,12 @@
+[
+{
+  "directory": "E:/hoc tap/20213/project_native/android/app/.cxx/Debug/4e6e6a1j/armeabi-v7a",
+  "command": "C:\\Users\\ASUS\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=armv7-none-linux-androideabi16 --gcc-toolchain=C:/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -I\"E:/hoc tap/20213/tools/OpenCV-android-sdk/sdk/native/jni/include\" -IC:/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/sources/android/cpufeatures -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC -o CMakeFiles\\cpufeatures.dir\\C_\\Users\\ASUS\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\sources\\android\\cpufeatures\\cpu-features.c.o -c C:\\Users\\ASUS\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\sources\\android\\cpufeatures\\cpu-features.c",
+  "file": "C:\\Users\\ASUS\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\sources\\android\\cpufeatures\\cpu-features.c"
+},
+{
+  "directory": "E:/hoc tap/20213/project_native/android/app/.cxx/Debug/4e6e6a1j/armeabi-v7a",
+  "command": "C:\\Users\\ASUS\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe --target=armv7-none-linux-androideabi16 --gcc-toolchain=C:/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dnative_with_opencv_EXPORTS -I\"E:/hoc tap/20213/tools/OpenCV-android-sdk/sdk/native/jni/include\" -IC:/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/sources/android/cpufeatures -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -frtti -fexceptions -std=c++11 -O0 -fno-limit-debug-info  -fPIC -pthread -o CMakeFiles\\native_with_opencv.dir\\src\\main\\cpp\\native_add.cpp.o -c \"E:\\hoc tap\\20213\\project_native\\android\\app\\src\\main\\cpp\\native_add.cpp\"",
+  "file": "E:/hoc tap/20213/project_native/android/app/src/main/cpp/native_add.cpp"
+}
+]

@@ -1,0 +1,5 @@
+ninja: Entering directory `E:\hoc tap\20213\project_native\android\app\.cxx\Debug\4e6e6a1j\arm64-v8a'
+[1/4] Building C object CMakeFiles/cpufeatures.dir/C_/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/sources/android/cpufeatures/cpu-features.c.o
+[2/4] Linking C static library libcpufeatures.a
+[3/4] Building CXX object CMakeFiles/native_with_opencv.dir/src/main/cpp/native_add.cpp.o
+[4/4] Linking CXX shared library "E:\hoc tap\20213\project_native\build\app\intermediates\cxx\Debug\4e6e6a1j\obj\arm64-v8a\libnative_with_opencv.so"

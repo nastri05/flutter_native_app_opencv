@@ -1,0 +1,23 @@
+                    Executable : C:\Users\ASUS\AppData\Local\Android\sdk\cmake\3.18.1\bin\cmake.exe
+arguments : 
+-HE:\hoc tap\20213\project_native\android\app
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=24
+-DANDROID_PLATFORM=android-24
+-DANDROID_ABI=x86_64
+-DCMAKE_ANDROID_ARCH_ABI=x86_64
+-DANDROID_NDK=C:\Users\ASUS\AppData\Local\Android\sdk\ndk\21.1.6352462
+-DCMAKE_ANDROID_NDK=C:\Users\ASUS\AppData\Local\Android\sdk\ndk\21.1.6352462
+-DCMAKE_TOOLCHAIN_FILE=C:\Users\ASUS\AppData\Local\Android\sdk\ndk\21.1.6352462\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=C:\Users\ASUS\AppData\Local\Android\sdk\cmake\3.18.1\bin\ninja.exe
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=E:\hoc tap\20213\project_native\build\app\intermediates\cxx\Debug\606p3xn3\obj\x86_64
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=E:\hoc tap\20213\project_native\build\app\intermediates\cxx\Debug\606p3xn3\obj\x86_64
+-DCMAKE_BUILD_TYPE=Debug
+-BE:\hoc tap\20213\project_native\android\app\.cxx\Debug\606p3xn3\x86_64
+-GNinja
+jvmArgs : 
+
+
+                    Build command args: []
+                    Version: 2

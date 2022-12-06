@@ -1,0 +1,4 @@
+# ninja log v5
+1	250	692019225	CMakeFiles/cpufeatures.dir/C_/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/sources/android/cpufeatures/cpu-features.c.o	db9d3c71b1bb2cd5
+252	456	692019226	libcpufeatures.a	585b47136f3d7732
+6	1252	692019226	CMakeFiles/native_with_opencv.dir/src/main/cpp/native_add.cpp.o	fcde5aa0af709b35

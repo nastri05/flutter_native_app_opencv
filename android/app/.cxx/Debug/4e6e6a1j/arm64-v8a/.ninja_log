@@ -1,0 +1,5 @@
+# ninja log v5
+2	1474	692019218	CMakeFiles/cpufeatures.dir/C_/Users/ASUS/AppData/Local/Android/Sdk/ndk/21.1.6352462/sources/android/cpufeatures/cpu-features.c.o	15b8dde859560bc3
+1477	2159	692019219	libcpufeatures.a	2ca145c207bfb1e5
+10	3799	692019221	CMakeFiles/native_with_opencv.dir/src/main/cpp/native_add.cpp.o	4c09e42baf51c3f4
+3801	5374	692019222	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/4e6e6a1j/obj/arm64-v8a/libnative_with_opencv.so	56bced38b7fe5821

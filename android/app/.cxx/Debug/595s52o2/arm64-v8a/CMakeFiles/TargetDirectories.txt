@@ -1,0 +1,4 @@
+E:/hoc tap/20213/project_native/android/app/.cxx/Debug/595s52o2/arm64-v8a/CMakeFiles/cpufeatures.dir
+E:/hoc tap/20213/project_native/android/app/.cxx/Debug/595s52o2/arm64-v8a/CMakeFiles/native_add.dir
+E:/hoc tap/20213/project_native/android/app/.cxx/Debug/595s52o2/arm64-v8a/CMakeFiles/edit_cache.dir
+E:/hoc tap/20213/project_native/android/app/.cxx/Debug/595s52o2/arm64-v8a/CMakeFiles/rebuild_cache.dir
