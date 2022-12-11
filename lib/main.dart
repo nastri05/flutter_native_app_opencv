@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:project_native/native_add.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,7 +53,20 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  Uint8List? bytes;
+  bool check = true;
+  InAppWebViewController? webViewController;
+  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
+      crossPlatform: InAppWebViewOptions(
+        useShouldOverrideUrlLoading: true,
+        mediaPlaybackRequiresUserGesture: false,
+      ),
+      android: AndroidInAppWebViewOptions(
+        useHybridComposition: true,
+      ),
+      ios: IOSInAppWebViewOptions(
+        allowsInlineMediaPlayback: true,
+      ));
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -60,6 +76,11 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  @override
+  initState() {
+    super.initState();
   }
 
   @override
@@ -99,15 +120,46 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'You have pushed the button this many times:',
             ),
+            // check
+            //     ? Image(image: AssetImage("assets/den+thobaymau.png"))
+            //     : Image.memory(bytes!),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
+            ),
+            Expanded(
+              child: Stack(
+                children: <Widget>[
+                  InAppWebView(
+                    initialUrlRequest: URLRequest(
+                        url: Uri.parse(
+                            "https://www.youtube.com/watch?v=rlYjDyocrwI")),
+                    initialOptions: options,
+                    onWebViewCreated: (controller) {
+                      webViewController = controller;
+                      setState(() {});
+                    },
+                  ),
+                  check
+                      ? Container(
+                          width: 300,
+                          height: 300,
+                          child: Image(
+                              image: AssetImage("assets/den+thobaymau.png")))
+                      : Container(
+                          width: 300, height: 300, child: Image.memory(bytes!)),
+                ],
+              ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: () async {
+          check = false;
+          bytes = await webViewController!.takeScreenshot();
+          setState(() {});
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
