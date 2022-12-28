@@ -1,11 +1,24 @@
+import 'dart:ffi';
+import 'dart:isolate';
 import 'dart:typed_data';
-
+import 'package:ffi/ffi.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:project_native/native_add.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:project_native/required_args.dart';
+import 'package:screenshot/screenshot.dart';
 
 void main() {
   runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+      overlays: [SystemUiOverlay.bottom]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]).then((value) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -55,11 +68,15 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   Uint8List? bytes;
   bool check = true;
+  Image? img;
+  ScreenshotController screenshotController = ScreenshotController();
   InAppWebViewController? webViewController;
   InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
       crossPlatform: InAppWebViewOptions(
         useShouldOverrideUrlLoading: true,
         mediaPlaybackRequiresUserGesture: false,
+        preferredContentMode: UserPreferredContentMode.DESKTOP,
+        supportZoom: false,
       ),
       android: AndroidInAppWebViewOptions(
         useHybridComposition: true,
@@ -67,24 +84,35 @@ class _MyHomePageState extends State<MyHomePage> {
       ios: IOSInAppWebViewOptions(
         allowsInlineMediaPlayback: true,
       ));
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  Future<Float32List> computeFunction(
+      InAppWebViewController webViewController) async {
+    return webViewController!.takeScreenshot().then((image) {
+      Pointer<Uint32> s = malloc.allocate(1);
+      s[0] = image!.length;
+      final pointer = malloc<Uint8>(image!.length);
+      for (int i = 0; i < image!.length; i++) {
+        pointer[i] = image![i];
+      }
+      Float32List size = sizeImage(pointer, s).asTypedList(2);
+      // print(size);
+      // imageffi(pointer, s);
+      //Image img1 = Image.memory(pointer.asTypedList(s[0]));
+      malloc.free(pointer);
+      malloc.free(s);
+      return size;
     });
   }
 
   @override
-  initState() {
-    super.initState();
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    double with_1 = MediaQuery.of(context).size.width;
+    double height_1 = MediaQuery.of(context).size.height;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -100,69 +128,98 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+
+        child: Stack(
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            // check
-            //     ? Image(image: AssetImage("assets/den+thobaymau.png"))
-            //     : Image.memory(bytes!),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  InAppWebView(
-                    initialUrlRequest: URLRequest(
-                        url: Uri.parse(
-                            "https://www.youtube.com/watch?v=rlYjDyocrwI")),
-                    initialOptions: options,
-                    onWebViewCreated: (controller) {
-                      webViewController = controller;
-                      setState(() {});
-                    },
-                  ),
-                  check
-                      ? Container(
-                          width: 300,
-                          height: 300,
-                          child: Image(
-                              image: AssetImage("assets/den+thobaymau.png")))
-                      : Container(
-                          width: 300, height: 300, child: Image.memory(bytes!)),
-                ],
+            Container(
+              child: Screenshot(
+                controller: screenshotController,
+                child: InAppWebView(
+                  initialUrlRequest: URLRequest(
+                      url: Uri.parse("http://192.168.1.133:4747/video")),
+                  //
+
+                  initialOptions: options,
+                  onWebViewCreated: (controller) {
+                    webViewController = controller;
+                    setState(() {});
+                  },
+                  onLoadStart: (controller, url) {
+                    webViewController = controller;
+                    setState(() {});
+                  },
+                ),
               ),
             ),
+            check
+                ? Container(
+                    width: 30,
+                    height: 30,
+                    child: Image(
+                      image: AssetImage("assets/den+thobaymau.png"),
+                      fit: BoxFit.fill,
+                    ))
+                : Container(width: 300, height: 300, child: img),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          check = false;
-          bytes = await webViewController!.takeScreenshot();
-          setState(() {});
-        },
+        onPressed: CreateNewIsolate,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void CreateNewIsolate() async {
+    var receivePort = ReceivePort();
+    screenshotController.capture().then((value) async {
+      print('loi');
+      if (value != null) {
+        print('ko loi');
+        Isolate? newIsolate =
+            await Isolate.spawn(taskRunner, [receivePort.sendPort, value]);
+      }
+    }).catchError((onError) {
+      print(onError);
+    });
+    // RequiredArgs requiredArgs =
+    //     RequiredArgs(webViewController!, receivePort.sendPort);
+
+    // Future.delayed(Duration(seconds: 3), () {
+    //   newIsolate?.kill(priority: Isolate.immediate);
+    //   newIsolate = null;
+    //   print("kill");
+    // });
+    receivePort.listen((message) {
+      print(message);
+    });
+  }
+
+  static void taskRunner(List<dynamic> args) {
+    var sendPort = args[0] as SendPort;
+    // Future.delayed(Duration(seconds: 2), () {
+    //   sendPort.send(args[1]);
+    // });
+    // var sendPort = args[0] as SendPort;
+    var image = args[1] as Uint8List;
+    // late final controller = args[1] as InAppWebViewController;
+    // controller!.takeScreenshot().then((image) {
+    Pointer<Uint32> s = malloc.allocate(1);
+    s[0] = image!.length;
+    final pointer = malloc<Uint8>(image!.length);
+    for (int i = 0; i < image!.length; i++) {
+      pointer[i] = image![i];
+    }
+    Float32List size = sizeImage(pointer, s).asTypedList(2);
+    print(size.toList());
+    // imageffi(pointer, s);
+    //Image img1 = Image.memory(pointer.asTypedList(s[0]));
+    malloc.free(pointer);
+    malloc.free(s);
+    //print(size.toList());
+    //   Isolate.exit(sendPort, size.toList());
+    Isolate.exit(sendPort, size.toList());
+    // });
   }
 }
