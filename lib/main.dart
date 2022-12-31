@@ -5,10 +5,10 @@ import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:project_native/circle.dart';
 import 'package:project_native/native_add.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:project_native/required_args.dart';
-import 'package:screenshot/screenshot.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,6 +27,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final channel =
+        IOWebSocketChannel.connect(Uri.parse('ws://192.168.1.188:81'));
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -41,13 +44,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(channel: channel),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.channel});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -58,61 +61,30 @@ class MyHomePage extends StatefulWidget {
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
 
-  final String title;
+  final WebSocketChannel channel;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
   Uint8List? bytes;
   bool check = true;
   Image? img;
-  ScreenshotController screenshotController = ScreenshotController();
-  InAppWebViewController? webViewController;
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-      crossPlatform: InAppWebViewOptions(
-        useShouldOverrideUrlLoading: true,
-        mediaPlaybackRequiresUserGesture: false,
-        preferredContentMode: UserPreferredContentMode.DESKTOP,
-        supportZoom: false,
-      ),
-      android: AndroidInAppWebViewOptions(
-        useHybridComposition: true,
-      ),
-      ios: IOSInAppWebViewOptions(
-        allowsInlineMediaPlayback: true,
-      ));
-  Future<Float32List> computeFunction(
-      InAppWebViewController webViewController) async {
-    return webViewController!.takeScreenshot().then((image) {
-      Pointer<Uint32> s = malloc.allocate(1);
-      s[0] = image!.length;
-      final pointer = malloc<Uint8>(image!.length);
-      for (int i = 0; i < image!.length; i++) {
-        pointer[i] = image![i];
-      }
-      Float32List size = sizeImage(pointer, s).asTypedList(2);
-      // print(size);
-      // imageffi(pointer, s);
-      //Image img1 = Image.memory(pointer.asTypedList(s[0]));
-      malloc.free(pointer);
-      malloc.free(s);
-      return size;
-    });
-  }
+  Uint8List? imageData;
 
   @override
   void dispose() {
     // TODO: implement dispose
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    double with_1 = MediaQuery.of(context).size.width;
-    double height_1 = MediaQuery.of(context).size.height;
+    var size = MediaQuery.of(context).size;
+    // double height_1 = MediaQuery.of(context).size.height;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -132,34 +104,55 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Stack(
           children: <Widget>[
             Container(
-              child: Screenshot(
-                controller: screenshotController,
-                child: InAppWebView(
-                  initialUrlRequest: URLRequest(
-                      url: Uri.parse("http://192.168.1.133:4747/video")),
-                  //
-
-                  initialOptions: options,
-                  onWebViewCreated: (controller) {
-                    webViewController = controller;
-                    setState(() {});
-                  },
-                  onLoadStart: (controller, url) {
-                    webViewController = controller;
-                    setState(() {});
-                  },
-                ),
+              width: size.width,
+              height: size.height,
+              child: StreamBuilder(
+                stream: widget.channel.stream,
+                builder: (context, snapshot) {
+                  if (imageData == null && !snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    );
+                  } else {
+                    imageData = snapshot.data;
+                    return Image.memory(
+                      imageData!,
+                      gaplessPlayback: true,
+                      fit: BoxFit.cover,
+                    );
+                  }
+                },
               ),
             ),
-            check
-                ? Container(
-                    width: 30,
-                    height: 30,
-                    child: Image(
-                      image: AssetImage("assets/den+thobaymau.png"),
-                      fit: BoxFit.fill,
-                    ))
-                : Container(width: 300, height: 300, child: img),
+            // check
+            //     ? Container(
+            //         child: Positioned(
+            //           top: 50,
+            //           left: 50,
+            //           child: Container(
+            //             width: 50,
+            //             height: 50,
+            //             child: CustomPaint(
+            //               foregroundPainter: Circle(),
+            //               //CirclePain(),
+            //             ),
+            //           ),
+            //         ),
+            //       )
+            //     : Container(),
+
+            // check
+            //     ? Container(
+            //         width: 300,
+            //         height: 300,
+            //         child: const Image(
+            //           image: AssetImage("assets/den+thobaymau.png"),
+            //           fit: BoxFit.fill,
+            //         ))
+            //     : Container(
+            //         width: 300, height: 300, child: Image.memory(imageData!)),
           ],
         ),
       ),
@@ -171,18 +164,16 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void CreateNewIsolate() async {
+  void CreateNewIsolate() {
     var receivePort = ReceivePort();
-    screenshotController.capture().then((value) async {
-      print('loi');
-      if (value != null) {
-        print('ko loi');
-        Isolate? newIsolate =
-            await Isolate.spawn(taskRunner, [receivePort.sendPort, value]);
-      }
-    }).catchError((onError) {
-      print(onError);
-    });
+
+    // if (value != null) {
+    //   print('ko loi');
+    //   imageData = value;
+    //   check = false;
+    //   setState(() {});
+    //   //Isolate.spawn(taskRunner, [receivePort.sendPort, value]);
+    // }
     // RequiredArgs requiredArgs =
     //     RequiredArgs(webViewController!, receivePort.sendPort);
 
@@ -193,6 +184,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // });
     receivePort.listen((message) {
       print(message);
+      // newIsolate?.kill(priority: Isolate.immediate);
+      //newIsolate = null;
+      // check = true;
+      // setState(() {});
     });
   }
 
@@ -206,10 +201,10 @@ class _MyHomePageState extends State<MyHomePage> {
     // late final controller = args[1] as InAppWebViewController;
     // controller!.takeScreenshot().then((image) {
     Pointer<Uint32> s = malloc.allocate(1);
-    s[0] = image!.length;
-    final pointer = malloc<Uint8>(image!.length);
-    for (int i = 0; i < image!.length; i++) {
-      pointer[i] = image![i];
+    s[0] = image.length;
+    final pointer = malloc<Uint8>(image.length);
+    for (int i = 0; i < image.length; i++) {
+      pointer[i] = image[i];
     }
     Float32List size = sizeImage(pointer, s).asTypedList(2);
     print(size.toList());
@@ -219,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
     malloc.free(s);
     //print(size.toList());
     //   Isolate.exit(sendPort, size.toList());
-    Isolate.exit(sendPort, size.toList());
+    sendPort.send(size.toList());
     // });
   }
 }
