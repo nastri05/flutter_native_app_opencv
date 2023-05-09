@@ -1,2 +1,13 @@
 ninja: Entering directory `E:\hoc tap\20213\project_native\android\app\.cxx\Debug\606p3xn3\armeabi-v7a'
-ninja: no work to do.
+[1/2] Building CXX object CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o
+../../../../src/main/cpp/native_add.cpp:11:23: warning: unknown escape sequence '\h' [-Wunknown-escape-sequence]
+   facedetect.load("E:\hoc tap\20213\project_native\assets\haarcascade_frontalface_default.xml");
+                      ^~
+../../../../src/main/cpp/native_add.cpp:11:37: warning: unknown escape sequence '\p' [-Wunknown-escape-sequence]
+   facedetect.load("E:\hoc tap\20213\project_native\assets\haarcascade_frontalface_default.xml");
+                                    ^~
+../../../../src/main/cpp/native_add.cpp:11:59: warning: unknown escape sequence '\h' [-Wunknown-escape-sequence]
+   facedetect.load("E:\hoc tap\20213\project_native\assets\haarcascade_frontalface_default.xml");
+                                                          ^~
+3 warnings generated.
+[2/2] Linking CXX shared library "E:\hoc tap\20213\project_native\build\app\intermediates\cxx\Debug\606p3xn3\obj\armeabi-v7a\libnative_opencv.so"

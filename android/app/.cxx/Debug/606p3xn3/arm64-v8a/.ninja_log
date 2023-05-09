@@ -1,45 +1,5 @@
 # ninja log v5
-2	2877	692025281	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-2881	4388	692025282	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-12	1972	692025569	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-1972	3655	692025571	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-29	7601	692101378	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-7602	15865	692101387	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-4	3685	692101710	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-3685	9462	692101716	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-4	3477	692101857	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-3477	8546	692101862	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-5	2586	692454629	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-2586	9199	692454636	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-6	2534	692486064	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-2534	3990	692486066	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-204	5504	692540774	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-5504	8010	692540776	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-8	2691	692547391	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-2691	5059	692547393	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-224	1775	692550128	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-216	5131	692565035	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-5131	11938	692565042	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-79	6192	692565931	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-6192	11846	692565937	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-22	14523	692566037	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-14550	26082	692566048	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-11	7596	692566233	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-7596	12168	692566237	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-14	7499	692566584	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-7499	12784	692566589	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-16	8389	692566749	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-8389	15311	692566756	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-18	11136	692566952	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-11137	18155	692566959	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-7	6702	692567240	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-6702	11965	692567245	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-9	3177	692567841	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-3177	8677	692567846	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-69	8854	692573290	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-114	7752	693918300	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-7753	14716	693918307	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-6	3647	693919287	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-3647	9039	693919292	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
-7	3101	693920195	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
-3101	7352	693920200	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
+2	5352	697661123	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
+5358	11914	697661130	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858
+10	4639	697661606	CMakeFiles/native_opencv.dir/src/main/cpp/native_add.cpp.o	7ea409e20f3b7011
+4640	6705	697661608	E:/hoc tap/20213/project_native/build/app/intermediates/cxx/Debug/606p3xn3/obj/arm64-v8a/libnative_opencv.so	cda3192ac9a91858

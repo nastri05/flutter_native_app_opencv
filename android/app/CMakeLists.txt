@@ -17,6 +17,12 @@ add_library( # Sets the name of the library.
 
 find_library(log-lib log)
 
+#set(DLIB_DIR "E:/hoc tap/20213/dlib-19.24")
+#include_directories(${DLIB_DIR}/include)
+#add_library( lib_dlib SHARED IMPORTED )
+#target_link_libraries( native_opencv lib_dlib)
+#set_target_properties(lib_dlib PROPERTIES IMPORTED_LOCATION ${DLIB_DIR}/${ANDROID_ABI}/libdlib.so)
+
 target_link_libraries( # Specifies the target library.
         native_opencv
         ${OpenCV_LIBS}

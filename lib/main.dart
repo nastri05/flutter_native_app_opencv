@@ -1,14 +1,15 @@
-import 'dart:ffi';
-import 'dart:isolate';
+import 'dart:io';
 import 'dart:typed_data';
-import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:project_native/circle.dart';
-import 'package:project_native/native_add.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
+import 'dart:async';
+import 'painter/face_detector_painter.dart';
+import 'rectan_face.dart';
 
 void main() {
   runApp(const MyApp());
@@ -27,194 +28,192 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final channel =
-        IOWebSocketChannel.connect(Uri.parse('ws://192.168.1.188:81'));
-
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(channel: channel),
+      home: NativeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.channel});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final WebSocketChannel channel;
+class NativeScreen extends StatefulWidget {
+  NativeScreen({
+    super.key,
+  });
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<NativeScreen> createState() => _NativeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  // int _counter = 0;
+class _NativeScreenState extends State<NativeScreen> {
+  MyBloc bloc = MyBloc();
+  String Url = '10.97.6.136';
   Uint8List? bytes;
-  bool check = true;
+  bool loadanh = false;
+  File? file;
   Image? img;
   Uint8List? imageData;
+  IOWebSocketChannel? channel;
+  var receivePort;
+  final faceDetector = FaceDetector(
+      options: FaceDetectorOptions(
+    // enableClassification: f,
+    performanceMode: FaceDetectorMode.accurate,
+  ));
+
+  @override
+  void initState() {
+    // receivePort = ReceivePort();
+    // receivePort.listen((message) {
+    //   print(message);
+    // });
+    Timer mytimer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+      //code to run on every 5 seconds
+      if (imageData != null) {
+        buildwidget(imageData);
+      }
+    });
+
+    super.initState();
+  }
 
   @override
   void dispose() {
     // TODO: implement dispose
-
+    faceDetector.close();
+    channel!.sink.close();
+    bloc.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    // double height_1 = MediaQuery.of(context).size.height;
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text('1+2 = ${nativeAdd(1, 2)}'),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-
-        child: Stack(
-          children: <Widget>[
-            Container(
-              width: size.width,
-              height: size.height,
-              child: StreamBuilder(
-                stream: widget.channel.stream,
-                builder: (context, snapshot) {
-                  if (imageData == null && !snapshot.hasData) {
-                    return Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    );
-                  } else {
-                    imageData = snapshot.data;
-                    return Image.memory(
-                      imageData!,
-                      gaplessPlayback: true,
-                      fit: BoxFit.cover,
-                    );
-                  }
-                },
-              ),
-            ),
-            // check
-            //     ? Container(
-            //         child: Positioned(
-            //           top: 50,
-            //           left: 50,
-            //           child: Container(
-            //             width: 50,
-            //             height: 50,
-            //             child: CustomPaint(
-            //               foregroundPainter: Circle(),
-            //               //CirclePain(),
-            //             ),
-            //           ),
-            //         ),
-            //       )
-            //     : Container(),
-
-            // check
-            //     ? Container(
-            //         width: 300,
-            //         height: 300,
-            //         child: const Image(
-            //           image: AssetImage("assets/den+thobaymau.png"),
-            //           fit: BoxFit.fill,
-            //         ))
-            //     : Container(
-            //         width: 300, height: 300, child: Image.memory(imageData!)),
-          ],
+    channel = IOWebSocketChannel.connect(Uri.parse('ws://${Url}:81'));
+    //InputImageData? data_image;
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Stack(
+            children: <Widget>[
+              Container(
+                  width: size.width,
+                  height: size.height,
+                  child: StreamBuilder(
+                      stream: channel?.stream,
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          //imageData = (assetName)
+                          return Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.deepOrange),
+                            ),
+                          );
+                        } else {
+                          imageData = snapshot.data;
+                          //setState(() {});
+                          return Image.memory(
+                            imageData!,
+                            width: 672,
+                            height: 360,
+                            gaplessPlayback: true,
+                            fit: BoxFit.contain,
+                          );
+                        }
+                      })),
+              Center(
+                child: Container(
+                  height: size.height,
+                  width: size.width,
+                  child: StreamBuilder(
+                    stream: bloc.counterStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        Rectan_face data = snapshot.data;
+                        print(
+                            ' ${data.Check_face}  + ${data.top} +  ${data.left}');
+                        if (data.Check_face == true) {
+                          return CustomPaint(
+                            foregroundPainter: FaceDetectorPainter(
+                                data,
+                                Size(672, 360),
+                                InputImageRotation.rotation0deg),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      } else {
+                        print('not data');
+                        return Container();
+                      }
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            //buildwidget(imageData);
+            channel!.sink.close();
+            channel = IOWebSocketChannel.connect(Uri.parse('ws://${Url}:81'));
+            setState(() {});
+          },
+          tooltip: 'Increment',
+          child: const Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: CreateNewIsolate,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  void CreateNewIsolate() {
-    var receivePort = ReceivePort();
-
-    // if (value != null) {
-    //   print('ko loi');
-    //   imageData = value;
-    //   check = false;
-    //   setState(() {});
-    //   //Isolate.spawn(taskRunner, [receivePort.sendPort, value]);
-    // }
-    // RequiredArgs requiredArgs =
-    //     RequiredArgs(webViewController!, receivePort.sendPort);
-
-    // Future.delayed(Duration(seconds: 3), () {
-    //   newIsolate?.kill(priority: Isolate.immediate);
-    //   newIsolate = null;
-    //   print("kill");
-    // });
-    receivePort.listen((message) {
-      print(message);
-      // newIsolate?.kill(priority: Isolate.immediate);
-      //newIsolate = null;
-      // check = true;
-      // setState(() {});
-    });
+  // }
+  buildwidget(Uint8List? data) async {
+    //print('123');
+    final dir = (await getTemporaryDirectory()).path;
+    final imageFile = File('$dir/a.png')..writeAsBytesSync(imageData!);
+    final image = InputImage.fromFile(imageFile);
+    processImage(image);
   }
 
-  static void taskRunner(List<dynamic> args) {
-    var sendPort = args[0] as SendPort;
-    // Future.delayed(Duration(seconds: 2), () {
-    //   sendPort.send(args[1]);
-    // });
-    // var sendPort = args[0] as SendPort;
-    var image = args[1] as Uint8List;
-    // late final controller = args[1] as InAppWebViewController;
-    // controller!.takeScreenshot().then((image) {
-    Pointer<Uint32> s = malloc.allocate(1);
-    s[0] = image.length;
-    final pointer = malloc<Uint8>(image.length);
-    for (int i = 0; i < image.length; i++) {
-      pointer[i] = image[i];
+  Future<void> processImage(InputImage inputImage) async {
+    final faces = await faceDetector.processImage(inputImage);
+    if (faces.length == 0) {
+      //print('Hong co ai');
+      Rectan_face data =
+          Rectan_face(Check_face: false, top: 0, left: 0, bot: 0, right: 0);
+      bloc.SendFace(data);
+      return;
+    } else {
+      // if (inputImage.inputImageData?.size != null &&
+      //     inputImage.inputImageData?.imageRotation != null) {
+      //   //   final painter = FaceDetectorPainter(
+      //   //       faces,
+      //   //       inputImage.inputImageData!.size,
+      //   //       inputImage.inputImageData!.imageRotation);
+      //   //   // _customPaint = CustomPaint(painter: painter);
+      String text = 'Faces found 1 : ${faces.length}\n\n';
+      for (final face in faces) {
+        text +=
+            'face 1 :  ${face.boundingBox}  ${face.boundingBox.width} ${face.boundingBox.height} \n\n';
+        Rectan_face data = Rectan_face(
+          Check_face: true,
+          top: face.boundingBox.top,
+          left: face.boundingBox.left,
+          bot: face.boundingBox.bottom,
+          right: face.boundingBox.right,
+        );
+        bloc.SendFace(data);
+        print(text);
+        return;
+      }
     }
-    Float32List size = sizeImage(pointer, s).asTypedList(2);
-    print(size.toList());
-    // imageffi(pointer, s);
-    //Image img1 = Image.memory(pointer.asTypedList(s[0]));
-    malloc.free(pointer);
-    malloc.free(s);
-    //print(size.toList());
-    //   Isolate.exit(sendPort, size.toList());
-    sendPort.send(size.toList());
-    // });
+    //_isBusy = false;
+    // if (mounted) {
+    //   setState(() {});
+    // }
   }
 }
